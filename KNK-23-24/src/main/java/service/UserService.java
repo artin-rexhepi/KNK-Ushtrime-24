@@ -1,7 +1,7 @@
 package service;
 
-import model.dto.CreateUserDto;
-import model.dto.UserDto;
+import model.User;
+import model.dto.*;
 import repository.UserRepository;
 
 public class UserService {
@@ -25,5 +25,35 @@ public class UserService {
         );
 
         return UserRepository.create(createUserData);
+    }
+
+    public static boolean login(LoginUserDto loginData){
+        User user = UserRepository.getByEmail(loginData.getEmail());
+        if (user == null){
+            return false;
+        }
+        String password = loginData.getPassword();
+        String salt = user.getSalt();
+        String passwordHash = user.getPasswordHash();
+        return PasswordHasher.compareSaltedHash(password, salt, passwordHash);
+    }
+
+    public static boolean updatePassword(ChangeUserPasswordDto changePassword){
+        User user = UserRepository.getByEmail(changePassword.getEmail());
+        if(user==null){
+            return false;
+        }
+        String password = changePassword.getPassword();
+        String updatePassword = changePassword.getNewPassword();
+        String confirmPassword = changePassword.getConfirmPassword();
+        if(password.equals(updatePassword)){
+            return false;
+        }
+        if(!updatePassword.equals(confirmPassword)){
+            return false;
+        }
+        String salt = PasswordHasher.generateSalt();
+        String passwordHash = PasswordHasher.generateSaltedHash(updatePassword,salt);
+        UpdateUserDto updateUser = new UpdateUserDto()
     }
 }
