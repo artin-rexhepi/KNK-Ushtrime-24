@@ -1,5 +1,6 @@
 package controller;
 
+import app.Navigator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -32,6 +33,9 @@ public class SignUpController {
                 this.pwdConfirmPassword.getText());
 
         boolean response = UserService.signUp(userSignUpData);
+        if (response){
+            Navigator.navigate(ae, Navigator.LOGIN_PAGE);
+        }
     }
 
     @FXML

@@ -10,8 +10,10 @@ module org.example.knk2324 {
     opens Java_04 to javafx.graphics;
     opens Java_05 to javafx.graphics;
     opens Java_06 to javafx.fxml;
+
     exports org.example.knk2324;
     exports Java_06;
+    exports app;
     exports controller;
     opens controller to javafx.fxml;
 }
